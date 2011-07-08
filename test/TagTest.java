@@ -1,4 +1,8 @@
+import java.util.List;
+import java.util.Map;
+
 import models.Post;
+import models.Tag;
 import models.User;
 
 import org.junit.Test;
@@ -30,5 +34,16 @@ public class TagTest extends BasicTest {
         assertEquals(1, Post.findTaggedWith("Blue").size());
         assertEquals(1, Post.findTaggedWith("Green").size());
 
+		// Check for multiple tags
+		assertEquals(1, Post.findTaggedWith("Red", "Blue").size());
+		assertEquals(1, Post.findTaggedWith("Red", "Green").size());
+		assertEquals(0, Post.findTaggedWith("Red", "Green", "Blue").size());
+		assertEquals(0, Post.findTaggedWith("Green", "Blue").size());
+
+		// Check for tag cloud
+		List<Map> cloud = Tag.getCloud();
+		assertEquals(
+				"[{tag=Blue, pound=1}, {tag=Green, pound=1}, {tag=Red, pound=2}]",
+				cloud.toString());
     }
 }
