@@ -3,6 +3,7 @@ package controllers;
 import java.util.List;
 
 import models.Post;
+import models.Tag;
 import play.Play;
 import play.cache.Cache;
 import play.data.validation.Required;
@@ -43,6 +44,14 @@ public class Application extends Controller {
         flash.success("Thanks for posting %s", author);
         Cache.delete(randomID);
         show(postId);
+    }
+
+    public static Tag findOrCreateByName(String name) {
+        Tag tag = Tag.find("byName", name).first();
+        if (tag == null) {
+            tag = new Tag(name);
+        }
+        return tag;
     }
 
     public static void captcha(String id) {
